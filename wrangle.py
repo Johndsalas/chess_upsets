@@ -4,6 +4,8 @@ import os
 import pandas as pd
 import numpy as np
 
+import re
+
 from sklearn.model_selection import train_test_split
 import sklearn.preprocessing
 
@@ -52,11 +54,25 @@ def split_my_data(df):
 
     train_validate, test = train_test_split(df, test_size=.2, random_state=123, stratify=df.upset)
 
-    train, validate =  train_test_split(train_validate, test_size=.3, random_state=123, stratify=df.upset)
+    train, validate =  train_test_split(train_validate, test_size=.3, random_state=123, stratify=train_validate.upset)
 
     return train, validate, test
 
 ########################################Feature Engineering##############################################
+
+#*******************************************Pre Split***********************************************
+
+
+def get_time_block(value):
+    '''convert time code to time in minutes'''
+
+    # get both variables from the time code
+    value = re.sub(r'\+', ' ', value)
+    value = value.split(' ')
+
+    # return time block
+    return value[0]
+
 
 def fe_pre_split(df):
     '''Adds features to data before splitting'''
@@ -71,4 +87,39 @@ def fe_pre_split(df):
 
     df["lower_rated_white"] = (df.white_rating < df.black_rating)
 
+    df["time_block"] = df.time_code.apply(lambda value: get_time_block(value))
+
     return df
+
+#*******************************************Post Split***********************************************
+
+def get_time_in_minutes(value,average_moves):
+    '''convert time code to time in minutes'''
+
+    # get both variables from the time code
+    value = re.sub(r'\+', ' ', value)
+    value = value.split(' ')
+
+    # retunr calculated assigned play time for each player assuming average number of moves
+    return ((int(value[0]) * 60) + (int(value[1]) * (average_moves/2)))/60
+
+
+
+
+def fe_post_split(train, validate, test):
+    '''Adds features to data post splitting'''
+
+    # get averages game based on train data
+    average_moves = train.turns.mean()
+    average_rating = train.rating.mean()
+
+    # add time_minutes column to train validate and test
+    train["time_minutes"] = train.time_code.apply(lambda value: get_time_in_minutes(value,average_moves))
+    validate["time_minutes"] = validate.time_code.apply(lambda value: get_time_in_minutes(value,average_moves))
+    test["time_minutes"] = test.time_code.apply(lambda value: get_time_in_minutes(value,average_moves))
+
+    train['opening_code_pop'] = train['opening_code'].apply(lambda value : train.opening_code.value_counts()[value]/len(train))
+    train['opening_name_pop'] = train['opening_name'].apply(lambda value : train.opening_name.value_counts()[value]/len(train))
+
+
+    return train, validate, test
