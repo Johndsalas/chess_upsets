@@ -62,7 +62,6 @@ def split_my_data(df):
 
 #*******************************************Pre Split***********************************************
 
-
 def get_time_block(value):
     '''convert time code to time in minutes'''
 
@@ -103,9 +102,6 @@ def get_time_in_minutes(value,average_moves):
     # retunr calculated assigned play time for each player assuming average number of moves
     return ((int(value[0]) * 60) + (int(value[1]) * (average_moves/2)))/60
 
-
-
-
 def fe_post_split(train, validate, test):
     '''Adds features to data post splitting'''
 
@@ -119,14 +115,58 @@ def fe_post_split(train, validate, test):
     test["time_minutes"] = test.time_code.apply(lambda value: get_time_in_minutes(value,average_moves))
 
     # add opening_code_pop column calculation is based on the percent of games played with this opening in training data
-    train['opening_code_pop'] = train['opening_code'].apply(lambda value : train.opening_code.value_counts()[value]/len(train))
-    validate['opening_code_pop'] = validate['opening_code'].apply(lambda value : train.opening_code.value_counts()[value]/len(train))
-    test['opening_code_pop'] = test['opening_code'].apply(lambda value : train.opening_code.value_counts()[value]/len(train))
+    train['opening_code_pop'] = train['opening_code'].apply(lambda value : len(train[train.opening_code == value])/len(train))
+    validate['opening_code_pop'] = validate['opening_code'].apply(lambda value : len(train[train.opening_code == value])/len(train))
+    test['opening_code_pop'] = test['opening_code'].apply(lambda value : len(train[train.opening_code == value])/len(train))
     
     # add opening_name_pop column claculation is based on the percent of games played with this opening name in test data
-    train['opening_name_pop'] = train['opening_name'].apply(lambda value : train.opening_name.value_counts()[value]/len(train))
-    validate['opening_name_pop'] = validate['opening_name'].apply(lambda value : train.opening_name.value_counts()[value]/len(train))
-    test['opening_name_pop'] = test['opening_name'].apply(lambda value : train.opening_name.value_counts()[value]/len(train))
+    train['opening_name_pop'] = train['opening_name'].apply(lambda value : len(train[train.opening_code == value])/len(train))
+    validate['opening_name_pop'] = validate['opening_name'].apply(lambda value : len(train[train.opening_code == value])/len(train))
+    test['opening_name_pop'] = test['opening_name'].apply(lambda value : len(train[train.opening_code == value])/len(train))
 
+    # add opening_code_high_pop column calculation is based on the percent of games played with this opening amoung above average rated games in the training data
+    train['opening_code_high_pop'] = train['opening_code'].apply(lambda value : len(train[(train.opening_code == value) & (train.game_rating > average_rating)])/len(train))
+    validate['opening_code_high_pop'] = validate['opening_code'].apply(lambda value : len(train[(train.opening_code == value) & (train.game_rating > average_rating)])/len(train))
+    test['opening_code_high_pop'] = test['opening_code'].apply(lambda value : len(train[(train.opening_code == value) & (train.game_rating > average_rating)])/len(train))
+    
+    # add opening_name_high_pop column claculation is based on the percent of games played with this opening amoung above average rated games in the training data
+    train['opening_name_high_pop'] = train['opening_name'].apply(lambda value : len(train[(train.opening_code == value) & (train.game_rating > average_rating)])/len(train))
+    validate['opening_name_high_pop'] = validate['opening_name'].apply(lambda value : len(train[(train.opening_code == value) & (train.game_rating > average_rating)])/len(train))
+    test['opening_name_high_pop'] = test['opening_name'].apply(lambda value : len(train[(train.opening_code == value) & (train.game_rating > average_rating)])/len(train))
+    
+    # add opening_code_top_pop column calculation is based on the percent of games played with this opening amoung games rated +2000 in the training data
+    train['opening_code_top_pop'] = train['opening_code'].apply(lambda value : len(train[(train.opening_code == value) & (train.game_rating > 2000)])/len(train))
+    validate['opening_code_top_pop'] = validate['opening_code'].apply(lambda value : len(train[(train.opening_code == value) & (train.game_rating > 2000)])/len(train))
+    test['opening_code_top_pop'] = test['opening_code'].apply(lambda value : len(train[(train.opening_code == value) & (train.game_rating > 2000)])/len(train))
+    
+    # add opening_name_top_pop column claculation is based on the percent of games played with this opening amoung games rated +2000 in the training data
+    train['opening_name_top_pop'] = train['opening_name'].apply(lambda value : len(train[(train.opening_code == value) & (train.game_rating > 2000)])/len(train))
+    validate['opening_name_top_pop'] = validate['opening_name'].apply(lambda value : len(train[(train.opening_code == value) & (train.game_rating > 2000)])/len(train))
+    test['opening_name_top_pop'] = test['opening_name'].apply(lambda value : len(train[(train.opening_code == value) & (train.game_rating > 2000)])/len(train))
+
+    # add opening_code_low_pop column calculation is based on the percent of games played with this opening amoung games rated -1000 in the training data
+    train['opening_code_low_pop'] = train['opening_code'].apply(lambda value : len(train[(train.opening_code == value) & (train.game_rating <= 1000)])/len(train))
+    validate['opening_code_low_pop'] = validate['opening_code'].apply(lambda value : len(train[(train.opening_code == value) & (train.game_rating > 1000)])/len(train))
+    test['opening_code_low_pop'] = test['opening_code'].apply(lambda value : len(train[(train.opening_code == value) & (train.game_rating > 1000)])/len(train))
+    
+    # add opening_name_low_pop column claculation is based on the percent of games played with this opening amoung games rated -1000 in the training data
+    train['opening_name_low_pop'] = train['opening_name'].apply(lambda value : len(train[(train.opening_code == value) & (train.game_rating > 1000)])/len(train))
+    validate['opening_name_low_pop'] = validate['opening_name'].apply(lambda value : len(train[(train.opening_code == value) & (train.game_rating > 1000)])/len(train))
+    test['opening_name_low_pop'] = test['opening_name'].apply(lambda value : len(train[(train.opening_code == value) & (train.game_rating > 1000)])/len(train))
+
+    # add opening_code_rating_mean column calculation is based on the average game rating of games played using this opening
+    train['opening_code_rating_mean'] = train['opening_code'].apply(lambda value : train[train.opening_code == value].game_rating.mean())
+    validate['opening_code_rating_mean'] = validate['opening_code'].apply(lambda value : train[train.opening_code == value].game_rating.mean())
+    test['opening_code_rating_mean'] = test['opening_code'].apply(lambda value : train[train.opening_code == value].game_rating.mean())
+
+    # add opening_code_rating_median column calculation is based on the median game rating of games played using this opening
+    train['opening_code_rating_median'] = train['opening_code'].apply(lambda value : train[train.opening_code == value].game_rating.median())
+    validate['opening_code_rating_median'] = validate['opening_code'].apply(lambda value : train[train.opening_code == value].game_rating.median())
+    test['opening_code_rating_median'] = test['opening_code'].apply(lambda value : train[train.opening_code == value].game_rating.median())
+
+    # add opening_code_rating_max column calculation is based on the max game rating of games played using this opening
+    train['opening_code_rating_max'] = train['opening_code'].apply(lambda value : train[train.opening_code == value].game_rating.max())
+    validate['opening_code_rating_max'] = validate['opening_code'].apply(lambda value : train[train.opening_code == value].game_rating.max())
+    test['opening_code_rating_max'] = test['opening_code'].apply(lambda value : train[train.opening_code == value].game_rating.max())
 
     return train, validate, test
