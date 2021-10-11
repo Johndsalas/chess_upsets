@@ -111,15 +111,22 @@ def fe_post_split(train, validate, test):
 
     # get averages game based on train data
     average_moves = train.turns.mean()
-    average_rating = train.rating.mean()
+    average_rating = train.game_rating.mean()
 
-    # add time_minutes column to train validate and test
+    # add time_minutes column to train validate and test calculation is based on time increment and assumes an average number of moves
     train["time_minutes"] = train.time_code.apply(lambda value: get_time_in_minutes(value,average_moves))
     validate["time_minutes"] = validate.time_code.apply(lambda value: get_time_in_minutes(value,average_moves))
     test["time_minutes"] = test.time_code.apply(lambda value: get_time_in_minutes(value,average_moves))
 
+    # add opening_code_pop column calculation is based on the percent of games played with this opening in training data
     train['opening_code_pop'] = train['opening_code'].apply(lambda value : train.opening_code.value_counts()[value]/len(train))
+    validate['opening_code_pop'] = validate['opening_code'].apply(lambda value : train.opening_code.value_counts()[value]/len(train))
+    test['opening_code_pop'] = test['opening_code'].apply(lambda value : train.opening_code.value_counts()[value]/len(train))
+    
+    # add opening_name_pop column claculation is based on the percent of games played with this opening name in test data
     train['opening_name_pop'] = train['opening_name'].apply(lambda value : train.opening_name.value_counts()[value]/len(train))
+    validate['opening_name_pop'] = validate['opening_name'].apply(lambda value : train.opening_name.value_counts()[value]/len(train))
+    test['opening_name_pop'] = test['opening_name'].apply(lambda value : train.opening_name.value_counts()[value]/len(train))
 
 
     return train, validate, test
