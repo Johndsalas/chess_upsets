@@ -154,17 +154,17 @@ def fe_post_split(train, validate, test):
     validate['opening_name_low_pop'] = validate['opening_name'].apply(lambda value : len(train[(train.opening_code == value) & (train.game_rating > 1000)])/len(train))
     test['opening_name_low_pop'] = test['opening_name'].apply(lambda value : len(train[(train.opening_code == value) & (train.game_rating > 1000)])/len(train))
 
-    # add opening_code_rating_mean column calculation is based on the average game rating of games played using this opening
+    # add opening_code_rating_mean column calculation is based on the average game rating of games played using this opening in the training data
     train['opening_code_rating_mean'] = train['opening_code'].apply(lambda value : train[train.opening_code == value].game_rating.mean())
     validate['opening_code_rating_mean'] = validate['opening_code'].apply(lambda value : train[train.opening_code == value].game_rating.mean())
     test['opening_code_rating_mean'] = test['opening_code'].apply(lambda value : train[train.opening_code == value].game_rating.mean())
 
-    # add opening_code_rating_median column calculation is based on the median game rating of games played using this opening
+    # add opening_code_rating_median column calculation is based on the median game rating of games played using this opening in the training data
     train['opening_code_rating_median'] = train['opening_code'].apply(lambda value : train[train.opening_code == value].game_rating.median())
     validate['opening_code_rating_median'] = validate['opening_code'].apply(lambda value : train[train.opening_code == value].game_rating.median())
     test['opening_code_rating_median'] = test['opening_code'].apply(lambda value : train[train.opening_code == value].game_rating.median())
 
-    # add opening_code_rating_max column calculation is based on the max game rating of games played using this opening
+    # add opening_code_rating_max column calculation is based on the max game rating of games played using this opening in the training data
     train['opening_code_rating_max'] = train['opening_code'].apply(lambda value : train[train.opening_code == value].game_rating.max())
     validate['opening_code_rating_max'] = validate['opening_code'].apply(lambda value : train[train.opening_code == value].game_rating.max())
     test['opening_code_rating_max'] = test['opening_code'].apply(lambda value : train[train.opening_code == value].game_rating.max())
