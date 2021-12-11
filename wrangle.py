@@ -29,7 +29,7 @@ def wrangle_chess_data(reprep = False):
                                 'winner': 'winning_pieces'})
 
         # ensuring no white space in values
-        columns = ['ended_as', 'winning_pieces',
+        columns = ['victory_status', 'winning_pieces',
                    'time_increment', 'opening_name',
                    'opening_name']
 
@@ -88,39 +88,41 @@ def fe_pre_split(df):
 
     return df
 
+#######################Holding off on post split questions for now***********************************
+
 #*******************************************Post Split***********************************************
 
-def get_time_control(value):
-    '''convert time code to time in minutes'''
+# def get_time_control(value):
+#     '''convert time code to time in minutes'''
 
-    # get both variables from the time code
-    value = re.sub(r'\+', ' ', value)
-    value = value.split(' ')
+#     # get both variables from the time code
+#     value = re.sub(r'\+', ' ', value)
+#     value = value.split(' ')
 
-    # return overall time-control
-    return value[1]
+#     # return overall time-control
+#     return value[1]
 
-def fe_post_split(train, validate, test):
-    '''Adds features to data post splitting'''
+# def fe_post_split(train, validate, test):
+#     '''Adds features to data post splitting'''
 
-    # add opening_ave_rating column (average rating of games that are played using this opening)
-    train["opening_ave_rating"] = train.opening_name.apply(lambda value : train[train.opening_name == value].game_rating.mean())
-    validate["opening_ave_rating"] = train.opening_name.apply(lambda value : train[train.opening_name == value].game_rating.mean())
-    test["opening_ave_rating"] = train.opening_name.apply(lambda value : train[train.opening_name == value].game_rating.mean())
+#     # add opening_ave_rating column (average rating of games that are played using this opening)
+#     train["opening_ave_rating"] = train.opening_name.apply(lambda value : train[train.opening_name == value].game_rating.mean())
+#     validate["opening_ave_rating"] = train.opening_name.apply(lambda value : train[train.opening_name == value].game_rating.mean())
+#     test["opening_ave_rating"] = train.opening_name.apply(lambda value : train[train.opening_name == value].game_rating.mean())
 
-    # add opening_popularity (total games played with this opening in train)
-    train['opening_popularity_total'] = train['opening_name'].apply(lambda value : len(train[train.opening_name == value]))
-    validate['opening_popularity'] = validate['opening_name'].apply(lambda value : len(train[train.opening_name == value]))
-    test['opening_popularity'] = test['opening_name'].apply(lambda value : len(train[train.opening_name == value]))
+#     # add opening_popularity (total games played with this opening in train)
+#     train['opening_popularity_total'] = train['opening_name'].apply(lambda value : len(train[train.opening_name == value]))
+#     validate['opening_popularity'] = validate['opening_name'].apply(lambda value : len(train[train.opening_name == value]))
+#     test['opening_popularity'] = test['opening_name'].apply(lambda value : len(train[train.opening_name == value]))
     
-    # add opening_popularity_1500 (total games played with this opening by players who's average rating is over 1500 in train)
-    train['opening_popularity_1500'] = train['opening_name'].apply(lambda value : len(train[(train.game_rating > 1500) & (train.opening_name == value)]))
-    validate['opening_popularity_1500'] = validate['opening_name'].apply(lambda value : len(train[(train.game_rating > 1500) & (train.opening_name == value)]))
-    test['opening_popularity_1500'] = test['opening_name'].apply(lambda value : len(train[(train.game_rating > 1500) & (train.opening_name == value)]))
+#     # add opening_popularity_1500 (total games played with this opening by players who's average rating is over 1500 in train)
+#     train['opening_popularity_1500'] = train['opening_name'].apply(lambda value : len(train[(train.game_rating > 1500) & (train.opening_name == value)]))
+#     validate['opening_popularity_1500'] = validate['opening_name'].apply(lambda value : len(train[(train.game_rating > 1500) & (train.opening_name == value)]))
+#     test['opening_popularity_1500'] = test['opening_name'].apply(lambda value : len(train[(train.game_rating > 1500) & (train.opening_name == value)]))
 
-    # add opening_popularity_2000 (total games played with this opening by players who's average rating is over 2000 in train)
-    train['opening_popularity_2000'] = train['opening_name'].apply(lambda value : len(train[(train.game_rating > 2000) & (train.opening_name == value)]))
-    validate['opening_popularity_2000'] = validate['opening_name'].apply(lambda value : len(train[(train.game_rating > 2000) & (train.opening_name == value)]))
-    test['opening_popularity_2000'] = test['opening_name'].apply(lambda value : len(train[(train.game_rating > 2000) & (train.opening_name == value)]))
+#     # add opening_popularity_2000 (total games played with this opening by players who's average rating is over 2000 in train)
+#     train['opening_popularity_2000'] = train['opening_name'].apply(lambda value : len(train[(train.game_rating > 2000) & (train.opening_name == value)]))
+#     validate['opening_popularity_2000'] = validate['opening_name'].apply(lambda value : len(train[(train.game_rating > 2000) & (train.opening_name == value)]))
+#     test['opening_popularity_2000'] = test['opening_name'].apply(lambda value : len(train[(train.game_rating > 2000) & (train.opening_name == value)]))
 
-    return train, validate, test
+#     return train, validate, test
