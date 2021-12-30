@@ -20,25 +20,21 @@ def wrangle_chess_data(reprep = False):
         df = pd.read_csv('games.csv')
 
         # get feature columns
-        df = df[['rated', 'victory_status',
-            'winner', 'increment_code', 'white_rating',
+        df = df[['rated','winner', 'increment_code', 'white_rating',
             'black_rating', 'opening_name']]
 
         # rename columns
-        df = df.rename(columns={'increment_code':'time_increment',
-                                'winner': 'winning_pieces'})
+        df = df.rename(columns={'winner': 'winning_pieces'})
 
         # ensuring no white space in values
-        columns = ['victory_status', 'winning_pieces',
-                   'time_increment', 'opening_name',
-                   'opening_name']
+        columns = ['winning_pieces','increment_code', 'opening_name','opening_name']
 
         for column in columns:
         
             df[column] = df[column].apply(lambda value: value.strip())
 
-        # adding pre-split features
-        df = fe_pre_split(df)
+        # adding derived features
+        df = add_features(df)
 
         # saving to csv
         df.to_csv('chess_games_prepared.csv', index = False)
@@ -66,25 +62,43 @@ def get_time_block(value):
     # get both variables from the time code
     value = re.sub(r'\+', ' ', value)
     value = value.split(' ')
+    value = int(value[0])
 
     # return time block
-    return value[0]
+    if value >= 60:
 
+        return "Standard"
 
-def fe_pre_split(df):
-    '''Adds features to data before splitting'''
+    elif value <= 30 and value >= 15:
+
+        return "Rapid"
+
+    elif value <= 5 and value >= 3:
+
+        return "Blitz"
+
+    elif value <= 2:
+
+        return "Bullet"
+
+    else:
+
+        return "Other"
+
+def add_features(df):
+    '''Adds features for exploration'''
 
     df['upset'] = (((df.white_rating > df.black_rating) & (df.winning_pieces == 'black')) |
                   ((df.white_rating < df.black_rating) & (df.winning_pieces == 'white')))
 
-    df["rating_dif"] = abs(df.white_rating - df.black_rating)
+    df["rating_difference"] = abs(df.white_rating - df.black_rating)
 
     df["game_rating"] = (df.white_rating + df.black_rating) / 2
     df["game_rating"] = df["game_rating"].astype(int)
 
     df["lower_rated_white"] = (df.white_rating < df.black_rating)
 
-    df["time_control_group"] = df.time_increment.apply(lambda value: get_time_block(value))
+    df['time_control_group'] = df.increment_code.apply(lambda value: get_time_block(value))
 
     return df
 
