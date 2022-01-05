@@ -36,6 +36,8 @@ def wrangle_chess_data(reprep = False):
         # adding derived features
         df = add_features(df)
 
+        df = df[['time_control_group','opening_name']].join(pd.get_dummies(df,columns=['time_control_group','opening_name']))
+
         # saving to csv
         df.to_csv('chess_games_prepared.csv', index = False)
 
