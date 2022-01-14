@@ -8,7 +8,9 @@ import pandas as pd
 
 
 def model_prep(train,validate,test):
+    '''Prepare train, validate, and test data for modeling'''
 
+    # drop unused columns 
     drop_cols = ['time_control_group',
                  'opening_name',
                  'winning_pieces',
@@ -21,7 +23,7 @@ def model_prep(train,validate,test):
     validate = validate.drop(columns=drop_cols)
     test = test.drop(columns=drop_cols)
     
-    # Splitting data into predicting variables (X) and target variable (y) and resetting the index for each dataframe
+    # Split data into predicting variables (X) and target variable (y) and reset the index for each dataframe
     train_X = train.drop(columns='upset').reset_index(drop=True)
     train_y = train[['upset']].reset_index(drop=True)
 
@@ -32,8 +34,6 @@ def model_prep(train,validate,test):
     test_y = test[['upset']].reset_index(drop=True)
 
     # Scaling continuous variables
-
-    # columns to be scaled
     cols_to_scale = ['rating_difference']
 
     # create df's for train validate and test with only columns that need to be scaled
@@ -64,6 +64,7 @@ def model_prep(train,validate,test):
     validate_X = validate_X.join(validate_scaled)
     test_X = test_X.join(test_scaled)
 
+    # manual encoding
     train_X['rated'] = train_X.rated.apply(lambda value: 1 if value == True else 0)
     train_X['lower_rated_white'] = train_X.lower_rated_white.apply(lambda value: 1 if value == True else 0)
 
@@ -75,6 +76,7 @@ def model_prep(train,validate,test):
     return train_X, validate_X, test_X, train_y, validate_y, test_y
 
 def get_tree(train_X, validate_X, train_y, validate_y):
+    '''get decision tree accuracy on train and validate data'''
 
     # create classifier object
     clf = DecisionTreeClassifier(max_depth=5, random_state=123)
@@ -82,45 +84,48 @@ def get_tree(train_X, validate_X, train_y, validate_y):
     #fit model on training data
     clf = clf.fit(train_X, train_y)
 
-    # get model accuracy for Decision Tree
+    # print result
     print(f"Accuracy of Decision Tree on train data is {clf.score(train_X, train_y)}")
     print(f"Accuracy of Decision Tree on validate data is {clf.score(validate_X, validate_y)}")
 
 def get_forest(train_X, validate_X, train_y, validate_y):
+    '''get random forest accuracy on train and validate data'''
 
+    # create model object and fit it to training data
     rf = RandomForestClassifier(max_depth=9, random_state=123)
-
     rf.fit(train_X,train_y)
 
-    # get model accuracy for training data
+    # print result
     print(f"Accuracy of Random Forest on train is {rf.score(train_X, train_y)}")
     print(f"Accuracy of Random Forest on validate is {rf.score(validate_X, validate_y)}")
 
 def get_reg(train_X, validate_X, train_y, validate_y):
+    '''get logistic regression accuracy on train and validate data'''
 
-    # from sklearn.linear_model import LogisticRegression
+    # create model object and fit it to the training data
     logit = LogisticRegression(solver='liblinear')
     logit.fit(train_X, train_y)
 
-    # get model accuracy for training data
+    # print result
     print(f"Accuracy of Logistic Regression on train is {logit.score(train_X, train_y)}")
     print(f"Accuracy of Logistic Regression on validate is {logit.score(validate_X, validate_y)}")
 
 def get_knn(train_X, validate_X, train_y, validate_y):
+    '''get KNN accuracy on train and validate data'''
 
+    # create model object and fit it to the training data
     knn = KNeighborsClassifier(n_neighbors=25, weights='uniform')
-
     knn.fit(train_X, train_y)
 
+    # print results
     print(f"Accuracy of Logistic Regression on train is {knn.score(train_X, train_y)}")
     print(f"Accuracy of Logistic Regression on validate is {knn.score(validate_X, validate_y)}")
 
 def get_tree_test(train_X, test_X, train_y, test_y):
-
-    # create classifier object
+    '''get decision tree accuracy on train and validate data'''
+    
+    # create model object and fit it to the training data
     clf = DecisionTreeClassifier(max_depth=5, random_state=123)
-
-    #fit model on training data
     clf = clf.fit(train_X, train_y)
 
     # get model accuracy for Decision Tree on test
