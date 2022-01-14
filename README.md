@@ -2,12 +2,12 @@
 
 # Introduction
 
-I’ve always had a certain fascination with the game of chess. As an avid boardgame player I’ve played a lot of games over the years and what I believe makes chess stand out against all of them is that the two sides in chess are nearly identical. Both have two knights, eight pawns, one king etc. All begin in the same position and so on. In other games players all hold special advantages not possessed by other players that they must maximize in order to win. Some rely on dice or other change driven mechanics. While these kinds of games are fun and can have a high level of strategy, I feel that nothing emphasizes the idea of two players engaged in a one-one-one battle of wits as chess does. 
-The game is extremely balanced and uses no elements of randomness (Save deciding who goes first). As such, players must rely only on their own knowledge and skill to give them advantage during the game. Because Chess is such a skill focused game, it seemed to me a natural conclusion that a more skilled player will defeat a less skilled player a large percent of the time. Large relative to any other sort of game. After all an athlete could by chance miss a shot or trip unexpectantly, luck can favor an opponent in any game in which it has a hand, but these factors would not have any influence over the chess board. I then came upon the Idea of investigating my hypotheses using a data set containing chess games that I found on Kaggle.
+I’ve always had a certain fascination with the game of chess. As an avid boardgame player I’ve played a lot of games over the years. What I believe makes chess stand out against all of them is that the two sides in chess are nearly identical. Both have two knights, eight pawns, one king etc. All begin in the same position and so on. In other games players all hold special advantages not possessed by other players that they must maximize in order to win. Some rely on dice or other chance driven mechanics. While these kinds of games are fun and can have a high level of strategy, I feel that nothing emphasizes the idea of two players engaged in a one-one-one battle of wits the way chess does. 
+Because chess extremely balanced and uses no elements of randomness (Save deciding who goes first), players must rely only on their own knowledge and skill to give them advantage during the game. This being the case, it seemed to me a natural conclusion that a more skilled player will defeat a less skilled player a large percent of the time. Large relative to any other sort of game. After all an athlete could by chance miss a shot or trip unexpectantly, luck can favor an opponent in any game in which it has a hand, but these factors would not have any influence over the chess board... Or would they..? I decided to find out by investigating a data set of chess games I found on kaggle. My goal would be to find drivers of lower skilled players beting higher skilled players and see if I could build a machine learning model to predic when this would occur.
 
 # Goal
 
-Discover drivers of upsets in chess games and use those drivers to build a model to predict the whether a given game would end in upset. An upset will be defined as a lower ranked player winning a game against a higher ranked player. I will be undertaking this project in order to practice going through the data science process and to gain a better understanding of why a more skilled player might lose to a less skilled player.
+Discover drivers of upsets in chess games and use those drivers to build a model to predict the whether a given game would end in upset. An upset will be defined as a lower ranked player winning a game against a higher ranked player. I will be undertaking this project in order to practice going through the data science process and to gain a better understanding of why a more skilled player might lose to a less skilled player in a game of chess.
 
 # Initial Hypotheses About Drivers
 
@@ -19,7 +19,7 @@ Discover drivers of upsets in chess games and use those drivers to build a model
 * Games where the lower rated player has the first move will have an increased likelihood of an upset
 * Some openings will be more or less prone to upsets
 
-### Initial Thoughts
+# Initial Thoughts
 
 <br>
 

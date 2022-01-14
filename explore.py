@@ -19,7 +19,7 @@ def get_pies_white(train):
     "create pie charts showing upset percentage for having and not having the first move"
 
     # create axis object
-    fig, (ax1,ax2) = plt.subplots(1,2,figsize=(10,10))
+    fig, (ax1,ax2) = plt.subplots(1,2)
     
     # create pie chart and assign to axis object
     values = [len(train.upset[(train.lower_rated_white == True) & (train.upset == True)]),
