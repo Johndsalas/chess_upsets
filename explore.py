@@ -70,14 +70,30 @@ def get_chi_rated(train):
     print(f'chi^2 = {chi2:.4f}')
     print(f'p     = {p:.4f}')
 
+def get_game_rating(train):
+
+    values = [train.game_rating[(train.upset == True)].mean(),train.game_rating[(train.upset == False)].mean()]
+    labels = ['Upset','Non-Upset', ] 
+
+    plt.bar(height=values, x=labels)
+    plt.title('The Mean Game Rating is About the Same in Upsets and Non-upsets')
+    plt.show()
+
 def ave_diff_rating(train):
 
     values = [train.rating_difference[(train.upset == True)].mean(),train.rating_difference[(train.upset == False)].mean()]
     labels = ['Upset','Non-Upset', ] 
 
     plt.bar(height=values, x=labels)
-    plt.title('The Mean Difference in Player Rating is Much Smaller in Upsets')
+    plt.title('The Mean Difference in Player Rating is Much Smaller in Upsets than in Non-upsets')
     plt.show()
+
+def get_t_rating_diff(train):
+
+    t, p = stats.ttest_ind(train.rating_difference[(train.upset == True)],train.rating_difference[(train.upset == False)])
+
+    print(f't = {t:.4f}')
+    print(f'p = {p:.4f}')    
 
 def get_pie_time(train):
 
