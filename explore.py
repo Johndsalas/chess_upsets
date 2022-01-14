@@ -7,7 +7,7 @@ def get_pie_upsets(train):
 
     values = [len(train.upset[train.upset == True]), len(train.upset[train.upset == False])] 
     labels = ['Upset','Non-Upset', ] 
-    plt.pie(values, labels=labels, autopct='%.0f%%')
+    plt.pie(values, labels=labels, autopct='%.0f%%', colors=['#ffc3a0', '#c0d6e4'])
     plt.title('Games Ending in Upsets Represent 1/3 of the train data')
     plt.show()
 
@@ -20,14 +20,14 @@ def get_pies_white(train):
             len(train.upset[(train.lower_rated_white == True) & (train.upset == False)])]
     labels = ['Upset', 'Non-Upset']
 
-    ax1.pie(values, labels=labels, autopct='%.0f%%')
+    ax1.pie(values, labels=labels, autopct='%.0f%%', colors=['#ffc3a0', '#c0d6e4'])
     ax1.title.set_text('Lower Rated Player has First Move')
 
     values = [len(train.upset[(train.lower_rated_white == False) & (train.upset == True)]),
             len(train.upset[(train.lower_rated_white == False) & (train.upset == False)])]
     labels = ['Upset', 'Non-Upset'] 
 
-    ax2.pie(values, labels=labels, autopct='%.0f%%')
+    ax2.pie(values, labels=labels, autopct='%.0f%%', colors=['#ffc3a0', '#c0d6e4'])
     ax2.title.set_text('Higher Rated Player has First Move')
 
     plt.show()
@@ -49,14 +49,14 @@ def get_pie_rated(train):
             len(train.upset[(train.rated == True) & (train.upset == False)])]
     labels = ['Upset', 'Non-Upset']
 
-    ax1.pie(values, labels=labels, autopct='%.0f%%')
+    ax1.pie(values, labels=labels, autopct='%.0f%%', colors=['#ffc3a0', '#c0d6e4'])
     ax1.title.set_text('Game is Rated')
 
     values = [len(train.upset[(train.rated == False) & (train.upset == True)]),
             len(train.upset[(train.rated == False) & (train.upset == False)])]
     labels = ['Upset', 'Non-Upset'] 
 
-    ax2.pie(values, labels=labels, autopct='%.0f%%')
+    ax2.pie(values, labels=labels, autopct='%.0f%%', colors=['#ffc3a0', '#c0d6e4'])
     ax2.title.set_text('Game is not Rated')
 
     plt.show()
@@ -73,9 +73,9 @@ def get_chi_rated(train):
 def get_game_rating(train):
 
     values = [train.game_rating[(train.upset == True)].mean(),train.game_rating[(train.upset == False)].mean()]
-    labels = ['Upset','Non-Upset', ] 
+    labels = ['Upset','Non-Upset']
 
-    plt.bar(height=values, x=labels)
+    plt.bar(height=values, x=labels, color=['#ffc3a0', '#c0d6e4'])
     plt.title('The Mean Game Rating is About the Same in Upsets and Non-upsets')
     plt.show()
 
@@ -84,7 +84,7 @@ def ave_diff_rating(train):
     values = [train.rating_difference[(train.upset == True)].mean(),train.rating_difference[(train.upset == False)].mean()]
     labels = ['Upset','Non-Upset', ] 
 
-    plt.bar(height=values, x=labels)
+    plt.bar(height=values, x=labels, color=['#ffc3a0', '#c0d6e4'])
     plt.title('The Mean Difference in Player Rating is Much Smaller in Upsets than in Non-upsets')
     plt.show()
 
@@ -97,16 +97,23 @@ def get_t_rating_diff(train):
 
 def get_pie_time(train):
 
+    # activate subplots objects
+    fig, axs = plt.subplots(2, 2, figsize=(10,8))
+
+    # list of charts to be generated
     times = ['Bullet', 'Blitz', 'Rapid', 'Standard']
 
-    for time in times:
+    # generate graphs and assign them to subplots
+    for time, ax in zip(times, axs.ravel()):
         
         values = [len(train.upset[(train.upset == True) & (train.time_control_group == time)]), len(train.upset[(train.upset == False) & (train.time_control_group == time)])] 
-        labels = ['Upset','Non-Upset', ] 
+        labels = ['Upset','Non-Upset']
         
-        plt.pie(values, labels=labels, autopct='%.0f%%')
-        plt.title(f'Upset Percentage for time block {time}')
-        plt.show()
+        ax.pie(values, labels=labels, autopct='%.0f%%', colors=['#ffc3a0', '#c0d6e4'])
+        ax.set_title(f'Upset Percentage for time block {time}')
+    
+plt.tight_layout()
+plt.show()
 
 def get_chi_time(train):
 
@@ -125,7 +132,7 @@ def get_pie_open(train):
         
         values = [len(train.upset[(train.upset == True) & (train.opening_name == name)]), len(train.upset[(train.upset == False) & (train.opening_name == name)])] 
         labels = ['Upset','Non-Upset'] 
-        plt.pie(values, labels=labels, autopct='%.0f%%')
+        plt.pie(values, labels=labels, autopct='%.0f%%', colors=['#ffc3a0', '#c0d6e4'])
         plt.title(f'Upset Percentage for {name}')
         plt.show()
 
