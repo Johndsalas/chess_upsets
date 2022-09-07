@@ -1,48 +1,16 @@
 # Chess Upsets
 
-# Introduction
+# Project Description 
 
-I’ve always had a certain fascination with the game of chess. As an avid boardgame player I’ve played a lot of games over the years. What I believe makes chess stand out against all of them is that the two sides in chess are nearly identical. Both have two knights, eight pawns, one king etc. All begin in the same position and so on. In other games players all hold special advantages not possessed by other players that they must maximize in order to win. Some rely on dice or other chance driven mechanics. While these kinds of games are fun and can have a high level of strategy, I feel that nothing emphasizes the idea of two players engaged in a one-one-one battle of wits the way chess does. 
-Because chess extremely balanced and uses no elements of randomness (Save deciding who goes first), players must rely only on their own knowledge and skill to give them advantage during the game. This being the case, it seemed to me a natural conclusion that a more skilled player will defeat a less skilled player a large percent of the time. Large relative to any other sort of game. After all an athlete could by chance miss a shot or trip unexpectantly, luck can favor an opponent in any game in which it has a hand, but these factors would not have any influence over the chess board... Or would they..? I decided to find out by investigating a data set of chess games I found on kaggle. My goal would be to find drivers of lower skilled players beting higher skilled players and see if I could build a machine learning model to predic when this would occur.
+Chess is widely renowned as one of the most skill intensive games ever invented. Both sides begin the game with identical pieces in an identical position, there are no random elements (aside from assigning the first move), and the movement pieces during a game can result in over 121 million possible combinations in just the fist three moves. Because of this, a player who is more skilled should win the grand majority of chess games. For this reason,  I have decided to look into the different elements of a chess game to determine if any of them increase or reduce the chance of a player with lower skill defeating a player with greater skill.
 
-# Goal
+# Project Goal
 
-Discover drivers of upsets in chess games and use those drivers to build a model to predict the whether a given game would end in upset. An upset will be defined as a lower ranked player winning a game against a higher ranked player. I will be undertaking this project in order to practice going through the data science process and to gain a better understanding of why a more skilled player might lose to a less skilled player in a game of chess.
+Discover drivers of upsets in chess games played on Lichess.org, and use those drivers to develop a machine learning model to predict whether a given game would end in upset. This information could be used to further our understanding of what game elements contribute to or detract from a game’s skill intensity.
 
-# Initial Hypotheses About Drivers
+# Initial thoughts
 
-* There will be few instances of upsets, possibly leading to an imbalanced data set
-* As ratings for both players increase, the likelihood of an upset will decrease 
-* As the margin between player ratings increase the likelihood of an upsets will decrease
-* Shorter time increments will increase the likelihood of an upset
-* Unranked games will have a higher likelihood of an upset than ranked games
-* Games where the lower rated player has the first move will have an increased likelihood of an upset
-* Some openings will be more or less prone to upsets
-
-# Initial Thoughts
-
-<br>
-
-* Going into this project I am of two minds.
-
-<br>
-
-**First**
-* Chess is a skill based game with no random elements (except assigning first move). 
-* Because of this the player with the highest level of skill will win any game not determined by variation in player performance. 
-* Because of this a given game will be won by the player with the highest level of skill a large majority of the time.
-* If this is true conditions under which variation in performance is the highest should result in the highest likelihood of an upset.
-
-<br>
-
-**Second**
-* It may also be the case that more skilled players are able to maintain consistency better than less skilled players under conditions that would increase variation in their performance.
-* If this is true, those conditions may make upsets less likely as the variance would have a greater effect on the less skilled player than on the more skilled player.
-
-<br>
-
-**Moving Forward**
-* Though these two schools of thought may point at differing conclusions, both seem grounded in reason and I am eager to see what the data can tell us
+My initial hypothesis is that drivers of upsets will be elements that either grant an outright advantage to one player or increase the likelihood of players making a mistake will be drivers of upsets.
 
 # The Plan
 
